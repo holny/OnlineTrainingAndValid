@@ -2,13 +2,13 @@
 For online training DL or ML project(not only tensorflow pytroch project)  Online!  And make dataset(etc. image or other sequence file) online. Check server status realtime. Multiply training task thread running.   
 
 在线进行多任务训练(不止tensorflow pytorch等)，在线批量上传数据(图片等)生成数据集，在线管理。实时监测服务器状态，如内存、CPU信息。在线验证训练效果。
-<small>
+
 > 欢迎查看我的其他项目：
 >
 > >  基于深度学习手写文本行图片识别tensorflow: https://github.com/holny/Image_Recognizer
 >
 > > 图像增强和针对手写图像真实化工具: https://github.com/holny/Data_GneratorAugmentation
-</small>
+   
 ### Show ##
 
 ![gif1](descimage/dashboard.gif)
