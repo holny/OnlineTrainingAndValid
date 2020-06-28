@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>HWR</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='quix/images/favicon.png') }}">
+    <!--    <link rel="stylesheet" href="{{ url_for('static', filename='lib/bootstrap-3.3.7-dist/css/bootstrap.css') }}">-->
+    <!--    <link href="{{ url_for('static', filename='lib/fontawesome/css/all.min.css') }}" rel="stylesheet" type="text/css">-->
+
+    <!--    &lt;!&ndash; Pignose Calender &ndash;&gt;-->
+    <!--    <link href="{{ url_for('static', filename='quix/plugins/pg-calendar/css/pignose.calendar.min.css') }}"-->
+    <!--          rel="stylesheet">-->
+    <!--    &lt;!&ndash; Chartist &ndash;&gt;-->
+    <!--    <link rel="stylesheet" href="{{ url_for('static', filename='quix/plugins/chartist/css/chartist.min.css') }}">-->
+    <!--    <link rel="stylesheet"-->
+    <!--          href="{{ url_for('static', filename='quix/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css') }}">-->
+    <!-- Custom Stylesheet -->
+    <!--      <link href="{{ url_for('static', filename='lib/glyphicons/css/bootstrap.css') }}" rel="stylesheet">-->
+
+    <!-- Sweetalert Stylesheet -->
+    <link href="{{ url_for('static', filename='quix/plugins/sweetalert/css/sweetalert.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='quix/plugins/toastr/css/toastr.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='quix/css/style.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='lib/fileinput/css/fileinput.min.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!--*******************
+    Preloader start
+********************-->
+<div id="preloader">
+    <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/>
+        </svg>
+    </div>
+</div>
+<!--*******************
+    Preloader end
+********************-->
+
+
+<!--**********************************
+    Main wrapper start
+***********************************-->
+<div id="main-wrapper">
+
+    <!--**********************************
+        Nav header start
+    ***********************************-->
+    <div class="nav-header">
+        <div class="brand-logo">
+            <a href="index.html">
+                <b class="logo-abbr"><img src="{{ url_for('static', filename='quix/images/logo.png') }}" alt=""> </b>
+                <span class="logo-compact"><img src="{{ url_for('static', filename='quix/images/logo-compact.png') }}"
+                                                alt=""></span>
+                <span class="brand-title">
+
+                        <img src="{{ url_for('static', filename='quix/images/logo-text.png') }}" alt="">
+                    </span>
+            </a>
+        </div>
+    </div>
+    <!--**********************************
+        Nav header end
+    ***********************************-->
+
+    <!--**********************************
+        Header start
+    ***********************************-->
+    <div class="header">
+        <div class="header-content clearfix">
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="toggle-icon"><i class="icon-menu"></i></span>
+                </div>
+            </div>
+            <div class="header-left">
+            </div>
+            <div class="header-right">
+
+            </div>
+        </div>
+    </div>
+    <!--**********************************
+        Header end ti-comment-alt
+    ***********************************-->
+
+    <!--**********************************
+        Sidebar start
+    ***********************************-->
+    <div class="nk-sidebar">
+        <div class="nk-nav-scroll">
+            <ul class="metismenu" id="menu">
+                <li class="nav-label">验证</li>
+                <li>
+                    <a href="{{ url_for('main') }}" aria-expanded="false">
+                        <i class="icon-badge menu-icon"></i><span class="nav-text">验证</span>
+                    </a>
+                </li>
+                <li class="nav-label">训练</li>
+                <li class="active">
+                    <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="icon-graph menu-icon"></i> <span class="nav-text">训练</span>
+                    </a>
+                    <ul aria-expanded="true" class="collapse in">
+                        <li class="active"><a href="javascript:void(0)" class="active">新建训练</a></li>
+                        <li><a href="{{ url_for('datalist') }}">数据源</a></li>
+                        <li><a href="{{ url_for('dashboard') }}">控制面板</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!--**********************************
+        Sidebar end
+    ***********************************-->
+
+    <!--**********************************
+        Content body start
+    ***********************************-->
+    <div class="content-body">
+
+        <div class="row page-titles mx-0">
+            <div class="col p-md-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Train</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">StartTrain</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3>新建训练</h3>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="example text-center">
+                                        <h5 class="box-title m-t-30">1. 选择一个数据源</h5>
+                                        <p class="text-muted m-b-20">请选择一个数据源,若没有合适的数据源,请前往<code>数据源</code>页面,新建/修改数据源!
+                                        </p>
+                                    </div>
+                                    <div class="input-group">
+                                        <select id="dataSourceSelector" class="custom-select">
+                                            <option value="" selected="selected">Choose...</option>
+                                            <option value="1">DataSource1</option>
+                                            <option value="2">DataSource2</option>
+                                            <option value="3">DataSource3</option>
+                                            <option value="4">DataSource4</option>
+                                            <option value="5">DataSource5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="example text-center">
+                                        <h5 class="box-title m-t-30">2. 选择一个check point</h5>
+                                        <p class="text-muted m-b-20">可以选择一个ckpt开始训练,如无需要,<code>可忽略(新开始)</code>!
+                                        </p>
+                                    </div>
+                                    <div class="table-responsive" style="overflow:scroll;">
+                                        <table class="table table-striped" id="ckpt_table">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>CKPT id</th>
+                                                <th>Train id</th>
+                                                <th>DS id</th>
+                                                <th>Create time</th>
+                                                <th>Tag</th>
+                                                <th>Epoch</th>
+                                                <th>Step</th>
+                                                <th>Acc</th>
+                                                <th>Loss</th>
+                                                <th>Modal</th>
+                                                <th>File nmae</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="ckpt_list_area">
+                                            <tr>
+                                                <th><input type="checkbox" id="chk1"></th>
+                                                <td>Kolor Tea Shirt For Man</td>
+                                                <td><span class="badge badge-primary px-2">Sale</span>
+                                                </td>
+                                                <td>January 22</td>
+                                                <td class="color-primary">$21.56</td>
+                                            </tr>
+                                            <tr>
+                                                <th><input type="checkbox" id="chk2"></th>
+                                                <td>Kolor Tea Shirt For Women</td>
+                                                <td><span class="badge badge-danger px-2">Tax</span>
+                                                </td>
+                                                <td>January 30</td>
+                                                <td class="color-success">$55.32</td>
+                                            </tr>
+                                            <tr>
+                                                <th>3</th>
+                                                <td>Blue Backpack For Baby</td>
+                                                <td><span class="badge badge-success px-2">Extended</span>
+                                                </td>
+                                                <td>January 25</td>
+                                                <td class="color-danger">$14.85</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {#                                    <div class="row">#}
+                                    {#                                        <div class="col-7">#}
+                                    {#                                            <div class="text-left" id="ckpt">1 - 20 of 568</div>#}
+                                    {#                                        </div>#}
+                                    {#                                        <div class="col-5">#}
+                                    {#                                            <div class="btn-group float-right">#}
+                                    {#                                                <button class="btn btn-gradient" type="button"><i#}
+                                    {#                                                        class="fa fa-angle-left"></i>#}
+                                    {#                                                </button>#}
+                                    {#                                                <button class="btn btn-dark" type="button"><i#}
+                                    {#                                                        class="fa fa-angle-right"></i>#}
+                                    {#                                                </button>#}
+                                    {#                                            </div>#}
+                                    {#                                        </div>#}
+                                    {#                                    </div>#}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button type="button" id="startTrainBtn" class="btn mb-1 btn-success"
+                                        style="margin: 0 auto 0 auto">开始训练
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
+
+
+<!--**********************************
+    Footer start
+***********************************-->
+<div class="footer">
+    <div class="copyright">
+        <p>2020 Copyright &copy; Designed & Developed by 380&369 team, Algorithms: <a href="#">SDC</a>, Back-end: <a
+                href="#">HYL</a>, Front-end: <a href="#">Hly</a></p>
+    </div>
+</div>
+<!--**********************************
+    Footer end
+***********************************-->
+</div>
+<!--**********************************
+    Main wrapper end
+***********************************-->
+
+<!--**********************************
+    Scripts
+***********************************-->
+<!--<script type="text/javascript" src="{{ url_for('static', filename='lib/jquery/jquery.min.js') }}"></script>-->
+
+<script src="{{ url_for('static', filename='quix/plugins/common/common.min.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/js/custom.min.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/js/settings.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/js/gleek.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/js/styleSwitcher.js') }}"></script>
+<!--&lt;!&ndash; Chartjs &ndash;&gt;-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/chart.js/Chart.bundle.min.js') }}"></script>-->
+<!--&lt;!&ndash; Circle progress &ndash;&gt;-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/circle-progress/circle-progress.min.js') }}"></script>-->
+<!--&lt;!&ndash; Datamap &ndash;&gt;-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/d3v3/index.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/topojson/topojson.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/datamaps/datamaps.world.min.js') }}"></script>-->
+<!--&lt;!&ndash; Morrisjs &ndash;&gt;-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/raphael/raphael.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/morris/morris.min.js') }}"></script>-->
+<!--&lt;!&ndash; Pignose Calender &ndash;&gt;-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/moment/moment.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/pg-calendar/js/pignose.calendar.min.js') }}"></script>-->
+<!--&lt;!&ndash; ChartistJS &ndash;&gt;-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/chartist/js/chartist.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js') }}"></script>-->
+
+
+<!--<script src="{{ url_for('static', filename='quix/js/dashboard/dashboard-1.js') }}"></script>-->
+
+<!--<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>-->
+<script src="{{ url_for('static', filename='js/hwr.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/fileinput/js/plugins/piexif.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/fileinput/js/plugins/purify.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/fileinput/js/fileinput.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/fileinput/js/locales/zh.js') }}"></script>
+
+<!-- Toastr -->
+<script src="{{ url_for('static', filename='quix/plugins/toastr/js/toastr.min.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/plugins/toastr/js/toastr.init.js') }}"></script>
+
+<!-- Sweetalert -->
+<script src="{{ url_for('static', filename='quix/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
+
+<script type="text/javascript">
+    {#let choose_ckpt_id = null;#}
+    {#let choose_ds_id = null;#}
+    $(function () {
+        console.log("js init");
+
+        toastr.options = {
+            timeOut: 5e3,
+            closeButton: !0,
+            debug: !1,
+            newestOnTop: !0,
+            progressBar: !0,
+            positionClass: "toast-bottom-right",
+            preventDuplicates: !0,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            tapToDismiss: !1
+
+        };
+
+        function get_dslist_and_ckptlist() {
+            $.ajax({
+                url: "/get_ds_info_list",
+                type: "GET",
+                success: function (result) {
+                    if (result.success == 1) {
+                        let data_dict_list = result.datalist;
+                        $('#dataSourceSelector').empty().append($('<option></option>').attr("value", "").attr('selected', 'selected').attr('disabled', 'disabled').append('请选择或者新建一个数据集'));
+                        $.each(data_dict_list, function (index, data) {
+                            $('#dataSourceSelector').append($('<option></option>').attr('value', data.dataset_id).append('Id' + data.dataset_id + '|' + data.dataset_name + " - " + data.dataset_tag));
+                        });
+                    } else {
+                        toastr.warning("Warning", result.msg);
+                    }
+                },
+                error: function () {
+                    toastr.error("Error", "获取数据集信息列表失败");
+                }
+            });
+
+            $.ajax({
+                url: "/get_ckpt_list",
+                type: "GET",
+                success: function (result) {
+                    if (result.success == 1) {
+                        let ckpt_list = result.ckptlist;
+                        $('#ckpt_list_area').empty();
+
+                        $.each(ckpt_list, function (index, data) {
+                            console.log(data);
+                            console.log(index);
+                            let tr = $('<tr></tr>');
+                            let ck_td = $('<td></td>').append($('<input>').attr('type', 'checkbox').attr('id', 'chpt_ckecbox_grp').attr('name', data['ckpt_id']).addClass('check_item'));
+                            let ckpt_id_td = $('<td></td>').append(data['ckpt_id']);
+                            let train_id_td = $('<td></td>').append(data['train_id']);
+                            let ds_td = $('<td></td>').append(data['dataset_id']);
+                            let ct_td = $('<td></td>').append(data['create_time']);
+                            let tag_td = $('<td></td>').append(data['ckpt_tag']);
+                            let epoch_td = $('<td></td>').append(data['epoch']);
+                            let step_td = $('<td></td>').append(data['step']);
+                            let acc_td = $('<td></td>').append(data['acc']);
+                            let loss_td = $('<td></td>').append(data['loss']);
+                            let modal_td = $('<td></td>').append(data['modal']);
+                            let file_name_td = $('<td></td>').append(data['ckpt_name']);
+                            tr.append(ck_td).append(ckpt_id_td).append(train_id_td).append(ds_td).append(ct_td)
+                                .append(tag_td).append(epoch_td).append(step_td).append(acc_td).append(loss_td).append(modal_td).append(file_name_td);
+
+                            $('#ckpt_list_area').append(tr);
+                        });
+                    } else {
+                        toastr.warning("Warning", result.msg);
+                    }
+                },
+                error: function () {
+                    toastr.error("Error", "获取CKPT列表失败");
+                }
+            });
+
+
+        }
+
+        get_dslist_and_ckptlist();
+
+
+    });
+
+    function checkIsNullOrEmpty(value) {
+        //正则表达式用于判斷字符串是否全部由空格或换行符组成
+        var reg = /^\s*$/;
+        //返回值为true表示不是空字符串
+        return (value != null && value != undefined && !reg.test(value))
+    }
+
+
+    $('#startTrainBtn').click(function () {
+        let dataSourceId = $('#dataSourceSelector').val();
+        let ckpt_id = null;
+        let ckpt_warning = ' 没有选择Ckpt';
+        if ($(".check_item:checked").length > 0) {
+            ckpt_id = $(".check_item:checked")[0].getAttribute('name');
+            ckpt_warning = ' 选择的Ckpt Id:' + ckpt_id;
+        }
+
+        if (checkIsNullOrEmpty(dataSourceId)) {
+            swal({
+                title: "开始训练吗?",
+                text: "确定选择的数据集Id:" + dataSourceId + " " + ckpt_warning,
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定开始!",
+                closeOnConfirm: !1
+            }, function () {
+                $.ajax({
+                    url: "/start_train",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'train_dataset_id': dataSourceId, 'train_ckpt_id': ckpt_id, 'train_modal': 'B'},
+                    success: function (data, status, request) {
+                        if (data.success = 1) {
+                            toastr.success("开始训练!", data.msg);
+                            let train_id = data.train_id;
+                            swal("开始训练!", "Dataset Id:" + dataSourceId + " " + ckpt_warning, "success");
+                            window.open('/record/'+train_id, '_blank');
+                        } else {
+                            toastr.error("出现错误!", data.msg);
+                        }
+                    },
+                    error: function (result) {
+                        toastr.error("出现错误!", "Ajax出错!");
+                    }
+                });
+            });
+
+        } else {
+            toastr.warning("请选择一个数据源!", "Train");
+        }
+
+    });
+
+    $(document).ready(function () {
+        $(document).on("click", ".check_item", function () {
+            let id = this.getAttribute('name');
+            {#console.log(id);#}
+            let elems = $(".check_item:checked");
+            for (let i = 0; i < elems.length; i++) {
+                console.log(elems[i].getAttribute('name'));
+                if (elems[i].getAttribute('name') != id) {
+                    $(elems[i]).prop("checked", false);
+                }
+            }
+        });
+    });
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>HWR | Data</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='quix/images/favicon.png') }}">
+    <!--    <link rel="stylesheet" href="{{ url_for('static', filename='lib/bootstrap-3.3.7-dist/css/bootstrap.css') }}">-->
+    <!--    <link href="{{ url_for('static', filename='lib/fontawesome/css/all.min.css') }}" rel="stylesheet" type="text/css">-->
+
+    <!--    &lt;!&ndash; Pignose Calender &ndash;&gt;-->
+    <!--    <link href="{{ url_for('static', filename='quix/plugins/pg-calendar/css/pignose.calendar.min.css') }}"-->
+    <!--          rel="stylesheet">-->
+    <!--    &lt;!&ndash; Chartist &ndash;&gt;-->
+    <!--    <link rel="stylesheet" href="{{ url_for('static', filename='quix/plugins/chartist/css/chartist.min.css') }}">-->
+    <!--    <link rel="stylesheet"-->
+    <!--          href="{{ url_for('static', filename='quix/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css') }}">-->
+    <!-- Custom Stylesheet -->
+    <!--      <link href="{{ url_for('static', filename='lib/glyphicons/css/bootstrap.css') }}" rel="stylesheet">-->
+
+    <!-- Sweetalert Stylesheet -->
+    <link href="{{ url_for('static', filename='quix/plugins/sweetalert/css/sweetalert.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='quix/plugins/toastr/css/toastr.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='quix/css/style.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='lib/fileinput/css/fileinput.min.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!--*******************
+    Preloader start
+********************-->
+<div id="preloader">
+    <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/>
+        </svg>
+    </div>
+</div>
+<!--*******************
+    Preloader end
+********************-->
+
+
+<!--**********************************
+    Main wrapper start
+***********************************-->
+<div id="main-wrapper">
+
+    <!--**********************************
+        Nav header start
+    ***********************************-->
+    <div class="nav-header">
+        <div class="brand-logo">
+            <a href="index.html">
+                <b class="logo-abbr"><img src="{{ url_for('static', filename='quix/images/logo.png') }}" alt=""> </b>
+                <span class="logo-compact"><img src="{{ url_for('static', filename='quix/images/logo-compact.png') }}"
+                                                alt=""></span>
+                <span class="brand-title">
+
+                        <img src="{{ url_for('static', filename='quix/images/logo-text.png') }}" alt="">
+                    </span>
+            </a>
+        </div>
+    </div>
+    <!--**********************************
+        Nav header end
+    ***********************************-->
+
+    <!--**********************************
+        Header start
+    ***********************************-->
+    <div class="header">
+        <div class="header-content clearfix">
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="toggle-icon"><i class="icon-menu"></i></span>
+                </div>
+            </div>
+            <div class="header-left">
+            </div>
+            <div class="header-right">
+
+            </div>
+        </div>
+    </div>
+    <!--**********************************
+        Header end ti-comment-alt
+    ***********************************-->
+
+    <!--**********************************
+        Sidebar start
+    ***********************************-->
+    <div class="nk-sidebar">
+        <div class="nk-nav-scroll">
+            <ul class="metismenu" id="menu">
+                <li class="nav-label">验证</li>
+                <li>
+                    <a href="{{ url_for('main') }}" aria-expanded="false">
+                        <i class="icon-badge menu-icon"></i><span class="nav-text">验证</span>
+                    </a>
+                </li>
+                <li class="nav-label">训练</li>
+                <li class="active">
+                    <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="icon-graph menu-icon"></i> <span class="nav-text">训练</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse in">
+                        <li><a href="{{ url_for('train') }}">新建训练</a></li>
+                        <li class="active"><a href="javascript:void(0)" class="active">数据源</a></li>
+                        <li><a href="{{ url_for('dashboard') }}">控制面板</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!--**********************************
+        Sidebar end
+    ***********************************-->
+
+    <!--**********************************
+        Content body start
+    ***********************************-->
+    <div class="content-body">
+
+        <div class="row page-titles mx-0">
+            <div class="col p-md-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Train</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Datalist</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3>新建/添加数据源</h3>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="example text-center">
+                                        <h5 class="box-title m-t-30">1. 选择数据集</h5>
+                                        <p class="text-muted m-b-20">选择一个数据集.也可新建一个数据集!</p>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-dark" type="button" data-toggle="modal"
+                                                        data-target="#newDataSourceModal">新建一个数据集
+                                                </button>
+                                            </div>
+                                            <select id="dataSourceSelector" class="custom-select">
+                                                {#                                                <option selected="selected">Choose...</option>#}
+                                                {#                                                <option value="1">DataSource1</option>#}
+                                                {#                                                <option value="2">DataSource2</option>#}
+                                                {#                                                <option value="3">DataSource3</option>#}
+                                                {#                                                <option value="4">DataSource4</option>#}
+                                                {#                                                <option value="5">DataSource5</option>#}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <h5 class="box-title m-t-30">2. 上传数据</h5>
+                                        <p class="text-muted m-b-20">请上传数据到已选数据集.<code>可批量上传</code>!</p>
+                                        <div class="form-group">
+                                            <input name="upData" id="trainImageInput" type="file" multiple>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <h4 class="d-inline">已有数据集</h4>
+                    <p class="text-muted" id="dataset_num_text">This is 3 column contents</p>
+                    <div class="row" id="dataset_brief_show_card_list">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+    <!--Modal --- newDataSourceModal -->
+    <div class="modal fade" id="newDataSourceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">新建一个数据源</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="newDSForm">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">名称*</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="newDSName" placeholder="DataSource Name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">标签*</label>
+                            <div class="col-sm-10">
+                                <select name="newDSTag" class="custom-select">
+                                    <option selected="selected" value="trainset">Train set(训练集)</option>
+                                    <option value="testset">Test set(测试集)</option>
+                                    <option value="validset">Valid set(验证集)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">标记</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="newDSComment" placeholder="输入标记">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="newDSSaveBtn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal --- modify -->
+    <div class="modal fade" id="dsModifyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dsModifyModalTitle">数据源集 Id:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="dataModifyModalForm">
+                        <div class="form-group row">
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="dataset_id" name="dataset_id"
+                                       style="display:none">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">名称*</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="newDSName" name="newDSName"
+                                       placeholder="DataSource Name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">标签*</label>
+                            <div class="col-sm-10">
+                                <select id="newDSTag" name="newDSTag" class="custom-select">
+                                    <option selected="selected" value="trainset">Train set(训练集)</option>
+                                    <option value="testset">Test set(测试集)</option>
+                                    <option value="validset">Valid set(验证集)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">标记</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="newDSComment" name="newDSComment"
+                                       placeholder="输入标记">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="dsModifyModalSaveBtn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
+
+
+<!--**********************************
+    Footer start
+***********************************-->
+<div class="footer">
+    <div class="copyright">
+        <p>2020 Copyright &copy; Designed & Developed by 380&369 team, Algorithms: <a href="#">SDC</a>, Back-end: <a
+                href="#">HYL</a>, Front-end: <a href="#">Hly</a></p>
+    </div>
+</div>
+<!--**********************************
+    Footer end
+***********************************-->
+</div>
+<!--**********************************
+    Main wrapper end
+***********************************-->
+
+<!--**********************************
+    Scripts
+***********************************-->
+<!--<script type="text/javascript" src="{{ url_for('static', filename='lib/jquery/jquery.min.js') }}"></script>-->
+
+<script src="{{ url_for('static', filename='quix/plugins/common/common.min.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/js/custom.min.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/js/settings.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/js/gleek.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/js/styleSwitcher.js') }}"></script>
+<!--&lt;!&ndash; Chartjs &ndash;&gt;-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/chart.js/Chart.bundle.min.js') }}"></script>-->
+<!--&lt;!&ndash; Circle progress &ndash;&gt;-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/circle-progress/circle-progress.min.js') }}"></script>-->
+<!--&lt;!&ndash; Datamap &ndash;&gt;-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/d3v3/index.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/topojson/topojson.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/datamaps/datamaps.world.min.js') }}"></script>-->
+<!--&lt;!&ndash; Morrisjs &ndash;&gt;-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/raphael/raphael.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/morris/morris.min.js') }}"></script>-->
+<!--&lt;!&ndash; Pignose Calender &ndash;&gt;-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/moment/moment.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/pg-calendar/js/pignose.calendar.min.js') }}"></script>-->
+<!--&lt;!&ndash; ChartistJS &ndash;&gt;-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/chartist/js/chartist.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js') }}"></script>-->
+
+
+<!--<script src="{{ url_for('static', filename='quix/js/dashboard/dashboard-1.js') }}"></script>-->
+
+<!--<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>-->
+<!--{{ url_for('static', filename='js/hwr.js') }}-->
+<script type="text/javascript" src="{{ url_for('static', filename='js/hwr.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/fileinput/js/plugins/piexif.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/fileinput/js/plugins/purify.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/fileinput/js/fileinput.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/fileinput/js/locales/zh.js') }}"></script>
+
+<!-- Toastr -->
+<script src="{{ url_for('static', filename='quix/plugins/toastr/js/toastr.min.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/plugins/toastr/js/toastr.init.js') }}"></script>
+
+<!-- Sweetalert -->
+<script src="{{ url_for('static', filename='quix/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
+
+<script type="text/javascript">
+    // 初始需要获取数据集信息列表并更新select
+    let global_data_list = null;
+    let newDSName = null;
+    let newDSTag = null;
+    let newDSComment = null;
+    $(function () {
+        $.ajax({
+            url: "/get_ds_info_list",
+            type: "GET",
+            success: function (result) {
+                if (result.success == 1) {
+                    let data_dict_list = result.datalist;
+                    global_data_list = data_dict_list;
+                    $('#dataset_num_text').empty().append('This is  ' + data_dict_list.length + '  column contents');
+                    $('#dataSourceSelector').empty().append($('<option></option>').attr("value", "").attr('selected', 'selected').attr('disabled', 'disabled').append('请选择或者新建一个数据集'));
+                    $.each(data_dict_list, function (index, data) {
+                        $('#dataSourceSelector').append($('<option></option>').attr('value', data.dataset_id).append(data.dataset_name + " - " + data.dataset_tag));
+                        //获取数据集图片Url并显示
+                        $('#dataset_brief_show_card_list').empty();
+                        get_url_and_show(index, data);
+                    });
+                    bind_card_dropdownmenu_click();
+                } else {
+                    toastr.warning("Warning", result.msg);
+                }
+            },
+            error: function () {
+                toastr.error("Error", "获取数据集信息列表失败");
+            }
+        });
+
+
+        function get_url_and_show(index, data) {
+            let dataset_id = data.dataset_id;
+            $.ajax({
+                url: "/get_data_url?dataset_id=" + dataset_id + "&limit=" + 3,
+                type: "GET",
+                {#contentType: "application/json",#}
+                {#data: JSON.stringify(map),#}
+                success: function (result) {
+                    if (result.success == 1) {
+                        let url_list = result.url_list;
+                        let main = $('<div></div>').addClass('col-lg-4').attr('id', 'card_item' + dataset_id);
+                        let card = $('<div></div>').addClass('card');
+                        let card_body = $('<div></div>').addClass('card-body');
+                        let card_head = $('<div></div>').addClass('row')
+                            .append($('<div></div>').addClass('col-md-10 col-lg-10').append($('<h4></h4>').addClass('card-title').append($('<a></a>').attr('href', '/dataset/'+dataset_id).attr('target','_blank').append(data.dataset_name + " - " + data.dataset_tag + "   |  上次更新:" + data.dataset_update_time + "   |   数量:" + data.dataset_size).attr('id', 'card_item_title' + dataset_id))))
+                            .append($('<div></div>').addClass('col-md-2 col-lg-2').append($('<div></div>').addClass('dropright custom-dropdown').append($('<span></span>').attr('type', 'button').addClass('fa fa-cog fa-lg').attr('data-toggle', 'dropdown').attr('style', 'cursor: pointer'))
+                                .append($('<div></div>').addClass('dropdown-menu dropdown-menu-right').append($('<a></a>').attr('name', index).addClass('dropdown-item dsModifyBtn').append('修改')).append($('<a></a>').attr('name', dataset_id).addClass('dropdown-item sweet-confirm').append('删除')))));
+
+                        let ol = $('<ol></ol>').addClass('carousel-indicators');
+                        let carousel_inner = $('<div></div>').addClass('carousel-inner');
+                        $.each(url_list, function (index, url) {
+                            if (index == 0) {
+                                carousel_inner.append($('<div></div>').addClass('carousel-item active').append($('<img>').addClass('d-block w-100').attr('src', url)).append($('<div></div>').addClass('carousel-caption d-none d-md-block').append($('<h5></h5>').append(dataset_id + ' image index:' + index)).append($('<p></p>').append(data.dataset_comment).attr('style', 'color:black').attr('id', 'card_item_comment' + dataset_id))));
+                            } else {
+                                carousel_inner.append($('<div></div>').addClass('carousel-item').append($('<img>').addClass('d-block w-100').attr('src', url)).append($('<div></div>').addClass('carousel-caption d-none d-md-block').append($('<h5></h5>').append(dataset_id + ' image index:' + index)).append($('<p></p>').append(data.dataset_comment).attr('style', 'color:black').attr('id', 'card_item_comment' + dataset_id))))
+                            }
+                            ol.append($('<li></li>').attr('data-slide-to', index).attr('data-target', '#carouselExampleCaptions' + index));
+                        });
+                        let carousel = $('<div></div>').addClass('bootstrap-carousel').append($('<div></div>').attr('data-ride', 'carousel').addClass('carousel slide').attr('id', 'carouselExampleCaptions' + index)
+                            .append(ol).append(carousel_inner)
+                            .append($('<a></a>').attr('data-slide', 'prev').attr('href', '#carouselExampleCaptions' + index).addClass('carousel-control-prev').append($('<span></span>').addClass('carousel-control-prev-icon')).append($('<span></span>').addClass('sr-only').append('Previous')))
+                            .append($('<a></a>').attr('data-slide', 'next').attr('href', '#carouselExampleCaptions' + index).addClass('carousel-control-next').append($('<span></span>').addClass('carousel-control-next-icon')).append($('<span></span>').addClass('sr-only').append('Next'))));
+                        card_body.append(card_head).append(carousel);
+                        card.append(card_body);
+                        main.append(card);
+                        $('#dataset_brief_show_card_list').append(main);
+
+
+                    } else {
+                        toastr.warning("Warning", result.msg);
+                    }
+                },
+                error: function () {
+                    toastr.warning("Error", "获取数据集url列表失败");
+                }
+            });
+
+        }
+
+        function bind_card_dropdownmenu_click(id) {
+
+
+        }
+
+    });
+
+
+    $(function () {
+        console.log("js init");
+
+        toastr.options = {
+            timeOut: 5e3,
+            closeButton: !0,
+            debug: !1,
+            newestOnTop: !0,
+            progressBar: !0,
+            positionClass: "toast-bottom-right",
+            preventDuplicates: !0,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            tapToDismiss: !1
+
+        };
+
+        {#数据集新建/上传图片逻辑#}
+
+        $("#trainImageInput").fileinput({
+            uploadUrl: "upload_image",  //还写具体上传地址才显示可拖拽区域
+            language: 'zh', //设置语言
+            allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+            uploadAsync: false, //默认异步上传
+            browseIcon: '<i class="fa fa-folder-open"></i>&nbsp;',
+            browseClass: "btn mb-1 btn-info", //按钮样式
+            removeIcon: '<i class="fa fa-trash"></i>',
+            removeClass: 'btn mb-1 btn-flat btn-danger',
+            cancelIcon: '<i class="fa fa-ban"></i>',
+            cancelClass: 'btn mb-1 btn-info',
+            pauseIcon: '<i class="fa fa-pause-circle"></i>',
+            pauseClass: 'btn mb-1 btn-info',
+            uploadIcon: '<i class="fa fa-upload"></i>',
+            uploadClass: 'btn mb-1 btn-info',
+            previewZoomButtonIcons: {
+                prev: '<i class="fa fa-caret-left"></i>',
+                next: '<i class="fa fa-caret-right"></i>',
+                toggleheader: '<i class="fa fa-arrows-v"></i>',
+                fullscreen: '<i class="fa fa-arrows-alt"></i>',
+                borderless: '<i class="fa fa-expand"></i>',
+                close: '<i class="fa fa-times"></i>'
+            },
+            previewZoomButtonClasses: {
+                prev: 'btn btn-navigate',
+                next: 'btn btn-navigate',
+                toggleheader: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+                fullscreen: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+                borderless: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+                close: 'btn btn-sm btn-kv btn-default btn-outline-secondary'
+            },
+            fileActionSettings: {
+                removeIcon: '<i class="fa fa-trash"></i>',
+                removeClass: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+                removeErrorClass: 'btn btn-sm btn-kv btn-danger',
+                removeTitle: 'Remove file',
+                uploadIcon: '<i class="fa fa-upload"></i>',
+                uploadClass: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+                uploadTitle: 'Upload file',
+                uploadRetryIcon: '<i class="fa fa-repeat"></i>',
+                uploadRetryTitle: 'Retry upload',
+                downloadIcon: '<i class="fa fa-arrow-circle-down"></i>',
+                downloadClass: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+                downloadTitle: 'Download file',
+                zoomIcon: '<i class="fa fa-search-plus"></i>',
+                zoomClass: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+                zoomTitle: 'View Details',
+                dragIcon: '<i class="fa fa-arrows"></i>',
+                dragClass: 'text-info',
+                dragTitle: 'Move / Rearrange',
+                dragSettings: {},
+                indicatorNew: '<i class="fa fa-plus-circle text-warning"></i>',
+                indicatorSuccess: '<i class="fa fa-check-circle text-success"></i>',
+                indicatorError: '<i class="fa fa-exclamation-circle text-danger"></i>',
+                indicatorLoading: '<i class="fa fa-hourglass-half text-muted"></i>',
+                indicatorPaused: '<i class="fa fa-pause text-primary"></i>',
+            },
+            autoReplace: false,
+            maxFileCount: 20, //表示允许同时上传的最大文件个数
+            maxTotalFileCount: 0,
+            enctype: 'multipart/form-data',
+            maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小
+            // minImageWidth: 500, //图片的最小宽度
+            // minImageHeight: 500,//图片的最小高度
+            // maxImageWidth: 2500,//图片的最大宽度
+            // maxImageHeight: 4000,//图片的最大高度
+            resizeImage: false,
+            resizePreference: 'width',
+            showUpload: true, //是否显示上传按钮
+            showRemove: true, //显示移除按钮
+            showPreview: true, //是否显示预览
+            previewFileType: ['jpg', 'gif', 'png', 'jpeg'],
+            showCaption: true,//是否显示长条标题
+            dropZoneEnabled: false,//是否显示拖拽区域
+            // autoReplace: true,
+            // msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            msgAjaxError: 'Something went wrong with the {operation} operation. Please try again later!', //错误提示
+            // uploadExtraData: {"destination": "blogsss"},//上传携带参数
+            uploadExtraData: function () {
+                console.log("uploadExtraData");
+                let selectorName = $('#dataSourceSelector option:selected').text().split('|');
+                let selectorId = $('#dataSourceSelector option:selected').val();
+                let dsName = null;
+                let dsTag = null;
+                let dsComment = null;
+                console.log(selectorId)
+                console.log(selectorName)
+                if (selectorId <= 0) {   //说明是新建数据集
+                    if (selectorName.length != 2) {
+                        toastr.error("Upload Error", "selector name 不正确，请重新建!");
+                        return false;
+                    } else {
+                        dsName = selectorName[0];
+                        dsTag = selectorName[1];
+                        dsComment = newDSComment;
+                    }
+                }
+                console.log('selectorId:' + selectorId);
+                return {
+                    'dataset_name': dsName,
+                    'dataset_id': selectorId,
+                    'dataset_tag': dsTag,
+                    'dataset_comment': dsComment
+                };
+            }
+        }).on("filepreupload", function (event, files) {  //选中要上传的文件后回调
+            // $(this).fileinput("upload");  //自动上传
+
+        }).on("filebatchuploadsuccess", function (event, data) {
+            console.log('filebatchuploadsuccess');
+            if (data.success = 1) {
+                toastr.success("Upload Success", "数据上传成功!");
+            } else {
+                toastr.warning("Upload Fail", data.msg);
+            }
+
+        }).on("fileuploaderror", function (event, data) {
+            toastr.error("Upload Error", "数据上传错误!");
+        });
+
+    });
+
+
+    $("#newDSSaveBtn").click(function () {
+        newDSName = $('#newDSForm').find('input[name*=newDSName]').val();
+        newDSTag = $('#newDSForm').find('select[name*=newDSTag]  option:selected').val();
+        newDSComment = $('#newDSForm').find('input[name*=newDSComment]').val();
+        console.log(newDSName);
+        console.log(newDSTag);
+        if (checkIsNullOrEmpty(newDSName) && checkIsNullOrEmpty(newDSTag)) {
+            if (newDSName.indexOf('|') > 0 || newDSTag.indexOf('|') > 0) {
+                toastr.warning("Warning", "数据源名称或者标签不能包含特殊字符| !");
+                console.log('数据源名称或者标签不能包含特殊字符| !');
+                newDSName = null;
+                newDSTag = null;
+                return;
+            }
+            newDSName = newDSName.trim();
+            newDSTag = newDSTag.trim();
+            if (checkIsNullOrEmpty(newDSComment)) {
+                newDSComment = newDSComment.trim();
+            }
+            $('#dataSourceSelector').find('option[selected]').removeAttr('selected');
+            let newOption = $('<option></option>').attr('value', '-1').attr('selected', 'selected').append(newDSName.trim() + "|" + newDSTag.trim());
+            $('#dataSourceSelector').append(newOption)
+            $('#newDataSourceModal').modal('hide');
+        } else {
+            toastr.warning("Warning", "数据源名称或者标签不能为空!");
+            console.log('数据源名称或者标签不能为空!');
+        }
+    });
+
+
+    $(document).ready(function () {
+
+        $(document).on("click", ".dsModifyBtn", function () {
+            let id = this.getAttribute('name');
+            console.log(id);
+            $('#dsModifyModal').find('#dsModifyModalTitle').empty().append('数据集 Id: ' + global_data_list[id]['dataset_id']);
+            $('#dsModifyModal').find('#newDSTag').val(global_data_list[id]['dataset_tag']);
+            $('#dsModifyModal').find('#newDSName').val(global_data_list[id]['dataset_name']);
+            $('#dsModifyModal').find('#dataset_id').val(global_data_list[id]['dataset_id']);
+            if (global_data_list[id]['dataset_comment'] != "null") {
+                $('#dsModifyModal').find('#newDSComment').val(global_data_list[id]['dataset_comment']);
+            }
+
+            $('#dsModifyModal').modal('show');
+        });
+        $(document).on("click", ".sweet-confirm", function () {
+            let id = this.getAttribute('name');
+            console.log(id);
+            swal({
+                title: "确定删除数据:" + id + " 吗 ?",
+                text: "删除后就不可恢复 !!",
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定, 删除它 !!",
+                closeOnConfirm: !1
+            }, function () {
+                $.ajax({
+                    url: "/remove_ds/" + id,
+                    type: "GET",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.success == 1) {
+                            $('#card_item' + id).empty();
+                            $('#card_item' + id).remove();
+                            {#window.location.reload();#}
+                            toastr.success("Success", "Id:" + id + " 数据集删除成功!");
+
+                        } else {
+                            toastr.warning("Warning", result.msg);
+                        }
+                    },
+                    error: function () {
+                        toastr.error("Error", "Id:" + id + " 数据集删除失败!");
+                    }
+                });
+                swal("开始删除!", "Id:" + id + " 数据集开始删除!", "success");
+            });
+        });
+
+        $('#dsModifyModalSaveBtn').click(function () {
+            let dataset_id = $('#dsModifyModal').find('#dataset_id').val();
+            let dataset_tag = $('#dsModifyModal').find('#newDSTag').val();
+            let dataset_name = $('#dsModifyModal').find('#newDSName').val();
+            let dataset_comment = $('#dsModifyModal').find('#newDSComment').val();
+            let map = null;
+            if (!checkIsNullOrEmpty(dataset_tag) || !(checkIsNullOrEmpty(dataset_name))) {
+                toastr.warning("Error", "数据集名称或者标签不正确!");
+                return;
+            }
+            if (checkIsNullOrEmpty(dataset_comment)) {
+                map = {
+                    'dataset_id': dataset_id,
+                    'dataset_name': dataset_name,
+                    'dataset_tag': dataset_tag,
+                    'dataset_comment': dataset_comment
+                };
+            } else {
+                map = {
+                    'dataset_id': dataset_id,
+                    'dataset_name': dataset_name,
+                    'dataset_tag': dataset_tag,
+                };
+            }
+            $('#dsModifyModal').modal('hide');
+            $.ajax({
+                url: "/update_ds_info",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(map),
+                success: function (result) {
+                    if (result.success == 1) {
+                        $('#card_item_title' + dataset_id).empty().append(dataset_name + " - " + dataset_tag);
+                        if (checkIsNullOrEmpty(dataset_comment)) {
+                            $('#card_item_comment' + dataset_id).empty().append(dataset_comment);
+                        }
+                        toastr.success("Success", "Id:" + dataset_id + " 数据集信息更新成功!");
+
+                    } else {
+                        toastr.warning("Warning", result.msg);
+                    }
+                },
+                error: function () {
+                    toastr.error("Error", "Id:" + dataset_id + " 数据集信息更新失败!");
+                }
+            });
+
+        })
+
+    });
+</script>
+</body>
+
+</html>

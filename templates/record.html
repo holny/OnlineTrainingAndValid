@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>HWR | Record</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='quix/images/favicon.png') }}">
+    <!--    <link rel="stylesheet" href="{{ url_for('static', filename='lib/bootstrap-3.3.7-dist/css/bootstrap.css') }}">-->
+    <!--    <link href="{{ url_for('static', filename='lib/fontawesome/css/all.min.css') }}" rel="stylesheet" type="text/css">-->
+
+    <!-- Pignose Calender -->
+    <!--    <link href="{{ url_for('static', filename='quix/plugins/pg-calendar/css/pignose.calendar.min.css') }}" rel="stylesheet">-->
+    <!-- Chartist -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='quix/plugins/chartist/css/chartist.min.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='quix/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css') }}">
+    <!-- Custom Stylesheet -->
+    <!--      <link href="{{ url_for('static', filename='lib/glyphicons/css/bootstrap.css') }}" rel="stylesheet">-->
+    <!-- Tables -->
+    <link href="{{ url_for('static', filename='quix/plugins/tables/css/datatable/dataTables.bootstrap4.min.css') }}"
+          rel="stylesheet">
+    <link href="{{ url_for('static', filename='quix/plugins/toastr/css/toastr.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='quix/css/style.css') }}" rel="stylesheet">
+
+    <!--    <link href="{{ url_for('static', filename='lib/fileinput/css/fileinput.min.css') }}" rel="stylesheet">-->
+
+</head>
+
+<body>
+
+<!--*******************
+    Preloader start
+********************-->
+<div id="preloader">
+    <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/>
+        </svg>
+    </div>
+</div>
+<!--*******************
+    Preloader end
+********************-->
+
+
+<!--**********************************
+    Main wrapper start
+***********************************-->
+<div id="main-wrapper">
+
+    <!--**********************************
+        Nav header start
+    ***********************************-->
+    <div class="nav-header">
+        <div class="brand-logo">
+            <a href="index.html">
+                <b class="logo-abbr"><img src="{{ url_for('static', filename='quix/images/logo.png') }}" alt=""> </b>
+                <span class="logo-compact"><img src="{{ url_for('static', filename='quix/images/logo-compact.png') }}"
+                                                alt=""></span>
+                <span class="brand-title">
+
+                        <img src="{{ url_for('static', filename='quix/images/logo-text.png') }}" alt="">
+                    </span>
+            </a>
+        </div>
+    </div>
+    <!--**********************************
+        Nav header end
+    ***********************************-->
+
+    <!--**********************************
+        Header start
+    ***********************************-->
+    <div class="header">
+        <div class="header-content clearfix">
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="toggle-icon"><i class="icon-menu"></i></span>
+                </div>
+            </div>
+            <div class="header-left">
+            </div>
+            <div class="header-right">
+
+            </div>
+        </div>
+    </div>
+    <!--**********************************
+        Header end ti-comment-alt
+    ***********************************-->
+
+    <!--**********************************
+        Sidebar start
+    ***********************************-->
+    <div class="nk-sidebar">
+        <div class="nk-nav-scroll">
+            <ul class="metismenu" id="menu">
+                <li class="nav-label">验证</li>
+                <li>
+                    <a href="{{ url_for('main') }}" aria-expanded="false">
+                        <i class="icon-badge menu-icon"></i><span class="nav-text">验证</span>
+                    </a>
+                </li>
+                <li class="nav-label">训练</li>
+                <li class="active">
+                    <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <i class="icon-graph menu-icon"></i> <span class="nav-text">训练</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="{{ url_for('train') }}">新建训练</a></li>
+                        <li><a href="{{ url_for('datalist') }}">数据源</a></li>
+                        <li><a href="{{ url_for('dashboard') }}">控制面板</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!--**********************************
+        Sidebar end
+    ***********************************-->
+
+    <!--**********************************
+        Content body start
+    ***********************************-->
+    <div class="content-body">
+
+        <div class="row page-titles mx-0">
+            <div class="col p-md-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Train</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Record:{{ train_id }}</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-12 m-b-30" id="train_brief_card">
+                    <h4 class="d-inline">Record {{ train_id }} <span class="label label-pill label-success"
+                                                                     id="train_status">正在进行</span></h4>
+                    <p class="text-muted">使用数据源 {{ train_dataset_id }}</p>
+                    <div class="card card-widget">
+                        <div class="card-body">
+                            <h5 class="text-muted">Record Overview </h5>
+                            <h2 class="mt-4" id="train_running_time">已运行{{ train_create_time }}</h2>
+                            <h5 class="text-muted">操作 </h5>
+                            <div class="button-group">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success">开始</button>
+                                    <button type="button" class="btn btn-primary">暂停</button>
+                                    <button type="button" class="btn btn-warning">重置</button>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="mt-4" id="train_now_progressbar">
+                                <h4 id="train_now_epoch_num">第xx轮进度:</h4>
+                                <h6>Online step <span class="pull-right" id="train_now_step_progress_text">30%</span>
+                                </h6>
+                                <div class="progress mb-3" style="height: 7px">
+                                    <div class="progress-bar bg-primary" id="train_now_step_progress_bar"
+                                         style="width: 30%;" role="progressbar"><span
+                                            class="sr-only"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4" id="train_all_progressbar">
+                                <h4>总进度:</h4>
+                                <h6 class="m-t-10 text-muted">Offline epoch <span class="pull-right"
+                                                                                  id="train_now_epoch_progress_text">50%</span>
+                                </h6>
+                                <div class="progress mb-3" style="height: 7px">
+                                    <div class="progress-bar bg-success" id="train_now_epoch_progress_bar"
+                                         style="width: 50%;" role="progressbar"><span
+                                            class="sr-only"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">每轮时长</h4>
+                            <div id="took_time_chart" class="ct-chart ct-golden-section"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">每轮Acc</h4>
+                            <div id="acc_scatter_diagram" class="ct-chart ct-golden-section"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">每轮Loss</h4>
+                            <div id="loss_chart" class="ct-chart ct-golden-section"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">最近训练数据</h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered zero-configuration">
+                                    <thead>
+                                    <tr>
+                                        <th>Record id</th>
+                                        <th>Update time</th>
+                                        <th>DS id</th>
+                                        <th>CKPT id</th>
+                                        <th>Epoch</th>
+                                        <th>Step</th>
+                                        <th>Step/Steps</th>
+                                        <th>Acc</th>
+                                        <th>Loss</th>
+                                        <th>Modal</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="task_recent_record_tb">
+                                    <tr>
+                                        <td>Tiger Nixon</td>
+                                        <td>System Architect</td>
+                                        <td>Edinburgh</td>
+                                        <td>61</td>
+                                        <td>2011/04/25</td>
+                                        <td>$320,800</td>
+                                    </tr>
+
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Record id</th>
+                                        <th>Update time</th>
+                                        <th>DS id</th>
+                                        <th>Epoch</th>
+                                        <th>Step</th>
+                                        <th>Step prog</th>
+                                        <th>Acc</th>
+                                        <th>Loss</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
+
+
+<!--**********************************
+    Footer start
+***********************************-->
+<div class="footer">
+    <div class="copyright">
+        <p>2020 Copyright &copy; Designed & Developed by 380&369 team, Algorithms: <a href="#">SDC</a>, Back-end: <a
+                href="#">HYL</a>, Front-end: <a href="#">Hly</a></p>
+    </div>
+</div>
+<!--**********************************
+    Footer end
+***********************************-->
+</div>
+<!--**********************************
+    Main wrapper end
+***********************************-->
+
+<!--**********************************
+    Scripts
+***********************************-->
+<!--<script type="text/javascript" src="{{ url_for('static', filename='lib/jquery/jquery.min.js') }}"></script>-->
+
+<script src="{{ url_for('static', filename='quix/plugins/common/common.min.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/js/custom.min.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/js/settings.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/js/gleek.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/js/styleSwitcher.js') }}"></script>
+<!-- Chartjs -->
+<script src="{{ url_for('static', filename='quix/plugins/chart.js/Chart.bundle.min.js') }}"></script>
+<!-- Circle progress -->
+<!--<script src="{{ url_for('static', filename='quix/plugins/circle-progress/circle-progress.min.js') }}"></script>-->
+<!-- Datamap -->
+<!--<script src="{{ url_for('static', filename='quix/plugins/d3v3/index.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/topojson/topojson.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/datamaps/datamaps.world.min.js') }}"></script>-->
+<!-- Morrisjs -->
+<!--<script src="{{ url_for('static', filename='quix/plugins/raphael/raphael.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/morris/morris.min.js') }}"></script>-->
+<!-- Pignose Calender -->
+<!--<script src="{{ url_for('static', filename='quix/plugins/moment/moment.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='quix/plugins/pg-calendar/js/pignose.calendar.min.js') }}"></script>-->
+<!-- ChartistJS -->
+<script src="{{ url_for('static', filename='quix/plugins/chartist/js/chartist.min.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js') }}"></script>
+<!-- Tables -->
+<script src="{{ url_for('static', filename='quix/plugins/tables/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/plugins/tables/js/datatable/dataTables.bootstrap4.min.js') }}"></script>
+{#<script src="{{ url_for('static', filename='quix/plugins/tables/js/datatable-init/datatable-basic.min.js') }}"></script>#}
+
+<!--<script src="{{ url_for('static', filename='quix/js/dashboard/dashboard-1.js') }}"></script>-->
+
+<!--<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>-->
+<script type="text/javascript" src="{{ url_for('static', filename='js/hwr.js') }}"></script>
+<!--<script src="{{ url_for('static', filename='lib/fileinput/js/plugins/piexif.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='lib/fileinput/js/plugins/purify.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='lib/fileinput/js/fileinput.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='lib/fileinput/js/locales/zh.js') }}"></script>-->
+
+<!-- Toastr -->
+<script src="{{ url_for('static', filename='quix/plugins/toastr/js/toastr.min.js') }}"></script>
+<script src="{{ url_for('static', filename='quix/plugins/toastr/js/toastr.init.js') }}"></script>
+
+<script type="text/javascript">
+    let bad_request_count = 0;
+    let task_info_last_update_time = null;
+    $(function () {
+        console.log("js init");
+        toastr.options = {
+            timeOut: 5e3,
+            closeButton: !0,
+            debug: !1,
+            newestOnTop: !0,
+            progressBar: !0,
+            positionClass: "toast-bottom-right",
+            preventDuplicates: !0,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            tapToDismiss: !1
+
+        };
+
+        //Simple line chart
+        let loss_chart = new Chartist.Line('#loss_chart', {
+            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+            series: [
+                [12, 9, 7, 8, 5],
+                [2, 1, 3.5, 7, 3],
+                [1, 3, 4, 5, 6]
+            ]
+        }, {
+            fullWidth: true,
+            chartPadding: {
+                right: 40
+            },
+            plugins: [
+                Chartist.plugins.tooltip()
+            ]
+        });
+
+        var took_time_chart = new Chartist.Line('#took_time_chart', {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            series: [
+                [1, 5, 2, 5, 4, 3],
+                [2, 3, 4, 8, 1, 2],
+                [5, 4, 3, 2, 1, 0.5]
+            ]
+        }, {
+            low: 0,
+            showArea: true,
+            showPoint: false,
+            showLine: false,
+            fullWidth: true
+        });
+
+
+        //Line Scatter Diagram
+        var times = function (n) {
+            return Array.apply(null, new Array(n));
+        };
+
+        var data = times(52).map(Math.random).reduce(function (data, rnd, index) {
+            data.labels.push(index + 1);
+            data.series.forEach(function (series) {
+                series.push(Math.random() * 100)
+            });
+
+            return data;
+        }, {
+            labels: [],
+            series: times(4).map(function () {
+                return new Array()
+            })
+        });
+
+        var options = {
+            showLine: false,
+            axisX: {
+                labelInterpolationFnc: function (value, index) {
+                    return index % 13 === 0 ? 'W' + value : null;
+                }
+            }
+        };
+
+        var responsiveOptions = [
+            ['screen and (min-width: 640px)', {
+                axisX: {
+                    labelInterpolationFnc: function (value, index) {
+                        return index % 4 === 0 ? 'W' + value : null;
+                    }
+                }
+            }]
+        ];
+
+        let acc_scatter_diagram = new Chartist.Line('#acc_scatter_diagram', data, options, responsiveOptions);
+
+
+        // 更新 并获取数据
+
+        // 更新进度条
+        let this_train_id = {{ train_id }};
+        let this_task_id = '{{ train_task_id }}';
+        {#let this_status_url = '{{ task_info_url }}';#}
+        let this_task_status = 'PREPARE';
+        let this_took_seconds = {{ task_took_seconds }};
+        let timer_auto_running = true;
+        let ajax_auto_get_train_info = true;
+        update_progress($('#train_brief_card'));
+        runningTime($('#train_brief_card').find('#train_running_time'));
+
+        function update_progress(card_elem) {
+            {#console.log(ajax_auto_get_train_info);#}
+            // getJSON()方法是JQuery内置方法，这里向Location中对应的url发起请求，即请求「/status/<task_id>」
+            if (bad_request_count >= 5) {
+                ajax_auto_get_train_info = false;
+                timer_auto_running = false;
+            }
+            if (ajax_auto_get_train_info) {
+                $.ajax({
+                    url: '/task',
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        'train_id': this_train_id,
+                        'task_id': this_task_id,
+                        'last_update_time': task_info_last_update_time
+                    }),
+                    success: function (result) {
+                        if (result.success == 1) {
+                            bad_request_count = 0;
+                            let data = result.train.task_running_info;
+                            task_info_last_update_time = result.train.update_time;
+                            this_task_status = data['train_status'];
+                            {#console.log(this_task_status);#}
+                            console.log(result.train);
+                            if (this_task_status == 'PREPARE') {
+                                card_elem.find('#train_status').removeClass().addClass('label label-pill label-secondary').empty().append('PREPARE');
+                                if (timer_auto_running == false) {
+                                    timer_auto_running = true;
+                                    runningTime(card_elem.find('#train_running_time'));
+                                }
+                                card_elem.find('button.btn-success').attr("disabled", "disabled");
+                                card_elem.find('button.btn-primary').removeAttr("disabled");
+                                card_elem.find('button.btn-warning').removeAttr("disabled");
+                                card_elem.find('button.btn-danger').removeAttr("disabled");
+                            } else if (this_task_status == 'PROGRESS') {
+                                card_elem.find('#train_status').removeClass().addClass('label label-pill label-secondary').empty().append('PROGRESS');
+                                if (timer_auto_running == false) {
+                                    timer_auto_running = true;
+                                    console.log("progress start runing");
+                                    runningTime(card_elem.find('#train_running_time'));
+                                }
+                                card_elem.find('button.btn-success').attr("disabled", "disabled");
+                                card_elem.find('button.btn-primary').removeAttr("disabled");
+                                card_elem.find('button.btn-warning').removeAttr("disabled");
+                                card_elem.find('button.btn-danger').removeAttr("disabled");
+
+                            } else if (this_task_status == 'SUCCESS') {
+                                card_elem.find('#train_status').removeClass().addClass('label label-pill label-success').empty().append('SUCCESS');
+                                if (timer_auto_running == true) {
+                                    timer_auto_running = false;
+                                }
+                                card_elem.find('button.btn-success').attr("disabled", "disabled");
+                                card_elem.find('button.btn-primary').attr("disabled", "disabled");
+                                card_elem.find('button.btn-warning').removeAttr("disabled");
+                                card_elem.find('button.btn-danger').attr("disabled", "disabled");
+
+                            } else if (this_task_status == 'PENDING') {
+                                card_elem.find('#train_status').removeClass().addClass('label label-pill label-warning').empty().append('PENDING');
+                                if (timer_auto_running == true) {
+                                    timer_auto_running = false;
+                                }
+                                card_elem.find('button.btn-success').removeAttr("disabled")
+                                card_elem.find('button.btn-primary').attr("disabled", "disabled");
+                                card_elem.find('button.btn-warning').removeAttr("disabled");
+                                card_elem.find('button.btn-danger').removeAttr("disabled");
+                            } else if (this_task_status == 'FAILURE') {
+                                card_elem.find('#train_status').removeClass().addClass('label label-pill label-danger').empty().append('FAILURE');
+                                if (timer_auto_running == true) {
+                                    timer_auto_running = false;
+                                }
+                                card_elem.find('button.btn-success').removeAttr("disabled")
+                                card_elem.find('button.btn-primary').attr("disabled", "disabled");
+                                card_elem.find('button.btn-warning').removeAttr("disabled");
+                                card_elem.find('button.btn-danger').removeAttr("disabled");
+                            } else if (this_task_status == 'REVOKED') {
+                                card_elem.find('#train_status').removeClass().addClass('label label-pill label-warning').empty().append('TERMINATED');
+                                if (timer_auto_running == true) {
+                                    timer_auto_running = false;
+                                }
+                                card_elem.find('button.btn-success').removeAttr("disabled")
+                                card_elem.find('button.btn-primary').attr("disabled", "disabled");
+                                card_elem.find('button.btn-warning').removeAttr("disabled");
+                                card_elem.find('button.btn-danger').removeAttr("disabled");
+                            } else if (this_task_status == 'NONE') {
+                                card_elem.find('#train_status').removeClass().addClass('label label-pill label-danger').empty().append('NONE');
+                                if (timer_auto_running == true) {
+                                    timer_auto_running = false;
+                                }
+                                card_elem.find('button.btn-success').removeAttr("disabled")
+                                card_elem.find('button.btn-primary').attr("disabled", "disabled");
+                                card_elem.find('button.btn-warning').removeAttr("disabled");
+                                card_elem.find('button.btn-danger').removeAttr("disabled");
+                            } else {
+                                this_task_status = 'ERROR';
+                                card_elem.find('#train_status').removeClass().addClass('label label-pill label-dark').empty().append('ERROR');
+                                if (timer_auto_running == true) {
+                                    timer_auto_running = false;
+                                }
+                                card_elem.find('button.btn-success').removeAttr("disabled")
+                                card_elem.find('button.btn-primary').attr("disabled", "disabled");
+                                card_elem.find('button.btn-warning').removeAttr("disabled");
+                                card_elem.find('button.btn-danger').removeAttr("disabled");
+                            }
+                            //计算进度
+                            {#console.log(data['train_epoch']);#}
+                            {#console.log(data['train_epochs']);#}
+                            let epoch_percent = parseInt(data['train_epoch'] * 100 / data['train_epochs']) + '%';
+                            let step_percent = parseInt(data['train_step'] * 100 / data['train_steps']) + '%';
+                            {#console.log(epoch_percent);#}
+                            {#console.log(step_percent);#}
+                            //更新进度条
+                            card_elem.find('#train_now_epoch_num').empty().append('第' + data['train_epoch'] + "/" + data['train_epochs'] + '轮进度:');
+                            card_elem.find('#train_now_step_progress_text').empty().append(step_percent);
+                            card_elem.find('#train_now_step_progress_bar').css('width', step_percent);
+
+                            card_elem.find('#train_now_epoch_progress_text').empty().append(epoch_percent);
+                            card_elem.find('#train_now_epoch_progress_bar').css('width', epoch_percent);
+                            if (this_task_status == 'PREPARE' || this_task_status == 'PROGRESS' || this_task_status == 'PENDING') {
+                                {#console.log("ajax_auto_get_train_info=true");#}
+                                ajax_auto_get_train_info = true;
+                            } else {
+                                {#console.log("ajax_auto_get_train_info=false");#}
+                                ajax_auto_get_train_info = false;
+                            }
+                            {#console.log(result.train.show_chart_info);#}
+                            if (result.train.show_chart_info != null) {
+                                update_train_chart_info_show(result.train.show_chart_info);
+                            }
+                        } else if (result.success == 2) {
+                            task_info_last_update_time = result.train.update_time;
+                            {#console.log(result.train.show_chart_info);#}
+                            if (result.train.show_chart_info != null) {
+                                update_train_chart_info_show(result.train.show_chart_info);
+                            }
+                        } else {
+                            toastr.warning("Warning", result.msg);
+                        }
+                    },
+                    error: function () {
+                        bad_request_count++;
+                        toastr.error("Error", "获取任务信息列表失败");
+                    }
+                });
+            }
+            // 2秒后再次运行
+            setTimeout(function () {
+                update_progress(card_elem);
+            }, 2000);
+        }
+
+        let chart_node_count_1 = 0;
+        let chart_values_1 = [];
+        let chart_labels_1 = [];
+        let chart_show_node_1 = 7;
+
+        let chart_node_count_2 = 0;
+        let chart_values_2 = [];
+        let chart_labels_2 = [];
+        let chart_show_node_2 = 12;
+
+        let chart_node_count_3 = 0;
+        let chart_values_3 = [];
+        let chart_labels_3 = [];
+        let chart_show_node_3 = 12;
+
+        function update_train_chart_info_show(task_info) {
+            let chart_info = task_info['show_chart'];
+            {#console.log(chart_info);#}
+            $.each(chart_info, function (index, data) {
+                chart_values_1.push(data['took_time']);
+                chart_labels_1.push(data['record_id'].toString().substr(-3));
+                chart_values_2.push(data['train_acc']);
+                chart_labels_2.push(data['record_id'].toString().substr(-3));
+                chart_values_3.push(data['train_loss']);
+                chart_labels_3.push(data['record_id'].toString().substr(-3));
+                let ut_time = data['update_time'].split(' ')[1];
+
+                if (chart_values_1.length > chart_show_node_1) {
+                    chart_values_1.splice(0, chart_values_1.length - chart_show_node_1);
+                }
+                if (chart_labels_1.length > chart_show_node_1) {
+                    chart_labels_1.splice(0, chart_labels_1.length - chart_show_node_1);
+                }
+                if (chart_values_2.length > chart_show_node_2) {
+                    chart_values_2.splice(0, chart_values_2.length - chart_show_node_2);
+                }
+                if (chart_labels_2.length > chart_show_node_2) {
+                    chart_labels_2.splice(0, chart_labels_2.length - chart_show_node_2);
+                }
+                if (chart_values_3.length > chart_show_node_3) {
+                    chart_values_3.splice(0, chart_values_3.length - chart_show_node_3);
+                }
+                if (chart_labels_3.length > chart_show_node_3) {
+                    chart_labels_3.splice(0, chart_labels_3.length - chart_show_node_3);
+                }
+            });
+            //Took time chart
+            let chart_update_data = {
+                labels: chart_labels_1,
+                series: [chart_values_1]
+            };
+            {#console.log(chart_update_data);#}
+            took_time_chart.update(chart_update_data);
+
+            //Acc diagram
+            let acc_update_data = {
+                labels: chart_labels_2,
+                series: [chart_values_2]
+            };
+            acc_scatter_diagram.update(acc_update_data);
+
+            //Loss chart
+            let loss_update_data = {
+                labels: chart_labels_3,
+                series: [chart_values_3]
+            };
+            loss_chart.update(loss_update_data);
+
+            // table
+            let epoch_percent = '0%';
+            let step_percent = '0%';
+            $('#task_recent_record_tb').empty();
+            $.each(task_info['recent_all_data'], function (index, data) {
+                epoch_percent = parseInt(data['train_epoch'] * 100 / data['train_epochs']) + '%';
+                step_percent = parseInt(data['train_step'] * 100 / data['train_steps']) + '%';
+                let tr = $('<tr></tr>');
+                let id_td = $('<td></td>').append(data['record_id']);
+                let ut_td = $('<td></td>').append(data['update_time']);
+                let ds_td = $('<td></td>').append(data['train_dataset_id']);
+                let ckpt_td = $('<td></td>').append(data['train_ckpt_id']);
+                let epoch_td = $('<td></td>').append(data['train_epoch']);
+                let step_td = $('<td></td>').append(data['train_step']);
+                let step_steps_td = $('<td></td>').append(step_percent);
+                let acc_td = $('<td></td>').append(data['train_acc']);
+                let loss_td = $('<td></td>').append(data['train_loss']);
+                let modal_td = $('<td></td>').append(data['train_modal']);
+                let status_td = $('<td></td>').append(data['train_status']);
+                tr.append(id_td).append(ut_td).append(ds_td).append(ckpt_td).append(epoch_td)
+                    .append(step_td).append(step_steps_td).append(acc_td).append(loss_td).append(modal_td).append(status_td);
+
+                $('#task_recent_record_tb').append(tr);
+            });
+
+
+        }
+
+
+        $('#train_brief_card').find('button.btn-success').click(function () {
+            console.log('start_train');
+            bad_request_count = 0;
+            $.ajax({
+                url: '/restart/' + this_train_id,
+                type: "GET",
+                success: function (result) {
+                    {#console.log(result)#}
+                    if (result.success == 1) {
+                        {#console.log("success")#}
+                        this_train_id = result.train_id;
+                        this_task_id = result.train_task_id;
+                        {#this_status_url = "/task/" + result.taskId + '/' + this_train_id;#}
+                        this_task_status = 'PREPARE';
+                        {#timer_auto_running = true;#}
+                        ajax_auto_get_train_info = true;
+                        {#console.log(ajax_auto_get_train_info)#}
+                        toastr.success("重启训练成功!", "Task id:" + this_task_id);
+                    } else {
+                        toastr.error("重启训练失败!", result.msg);
+                    }
+                },
+                error: function () {
+                    toastr.error("重启训练错误!", "Train id:" + this_train_id);
+                }
+
+            });
+        });
+
+        $('#train_brief_card').find('button.btn-primary').click(function () {
+            bad_request_count = 0;
+            if (this_task_status == 'PREPARE' || this_task_status == 'PROGRESS' || this_task_status == 'PENDING') {
+                $.ajax({
+                    url: '/stop/' + this_train_id,
+                    type: "GET",
+                    success: function (result) {
+                        {#console.log(result)#}
+                        if (result.success == 1) {
+                            this_task_status = 'STOP';
+                            timer_auto_running = false;
+                            toastr.success("停止训练成功!", result.msg);
+                        } else {
+                            toastr.error("停止训练失败!", result.msg);
+                        }
+                    },
+                    error: function () {
+                        toastr.error("停止训练错误!", "Train id:" + this_train_id);
+                    }
+                });
+
+            } else {
+                console.log("当前任务状态不能stop_train");
+            }
+        });
+
+        $('#train_brief_card').find('button.btn-warning').click(function () {
+            bad_request_count = 0;
+            console.log('reset_train');
+            $.ajax({
+                url: '/reset/' + this_train_id,
+                type: "GET",
+                success: function (result) {
+                    {#console.log(result)#}
+                    if (result.success == 1) {
+                        {#console.log("success")#}
+                          this_train_id = result.train_id;
+                        this_task_id =result.train_task_id;
+                        {#this_status_url = "/task/" + result.train_task_id + '/' + this_train_id;#}
+                        this_task_status = 'PREPARE';
+                        timer_auto_running = true;
+                        ajax_auto_get_train_info = true;
+                        {#console.log(ajax_auto_get_train_info)#}
+                        toastr.success("重置训练成功!", "Task id:" + this_task_id);
+                    } else {
+                        toastr.error("重置训练失败!", result.msg);
+                    }
+                },
+                error: function () {
+                    toastr.error("重置训练错误!", "Train id:" + this_train_id);
+                }
+
+            });
+        });
+
+        function runningTime(elem) {
+            if (timer_auto_running == false) {
+                return;
+            }
+            let leve1 = this_took_seconds;
+            let hour = Math.floor(leve1 / (3600));
+            let level2 = leve1 % (3600);
+            let minute = Math.floor(level2 / (60));
+            let level3 = level2 % (60);
+            let second = level3;
+
+            let Timer = "已运行" + hour + "小时" + minute + "分" + second + "秒";
+            //在页面上插入日期
+            elem.empty().append(Timer);
+            setTimeout(function () {
+                this_took_seconds++;
+                runningTime(elem);
+            }, 1000);
+        }
+
+        function currentTime(elem) {
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+            month = month < 10 ? ("0" + month) : month;
+            day = day < 10 ? ("0" + day) : day;
+            hour = hour < 10 ? ("0" + hour) : hour;
+            minute = minute < 10 ? ("0" + minute) : minute;
+            second = second < 10 ? ("0" + second) : second;
+            var Timer = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+            //在页面上插入日期
+
+            elem.html(Timer);
+            setTimeout(function () {
+                currentTime();
+            }, 1000);
+        }
+
+
+    });
+
+</script>
+</body>
+
+</html>
