@@ -1,25 +1,25 @@
 # OnlineTrainingAndValid
 For online training DL or ML project(not only tensorflow pytroch project)  Online!  And make dataset(etc. image or other sequence file) online. Check server status realtime. Multiply training task thread running.   
 
-在线进行多任务训练(不止tensorflow pytorch等)，在线批量上传数据(图片等)生成数据集，在线管理。实时监测服务器状态，如内存、CPU信息。在线验证训练效果。
+**在线进行多任务训练**(不止tensorflow pytorch等)，**在线批量上传数据**(图片等)生成数据集，在线管理。**实时监测服务器状态**，如内存、CPU信息。在线验证训练效果。
 
-> 欢迎查看我的其他项目：
+> <small>欢迎查看我的其他项目：</small>
 >
-> >  基于深度学习手写文本行图片识别tensorflow: https://github.com/holny/Image_Recognizer
+> >  <small>基于深度学习手写文本行图片识别tensorflow: https://github.com/holny/Image_Recognizer </small>
 >
-> > 图像增强和针对手写图像真实化工具: https://github.com/holny/Data_GneratorAugmentation
-   
+> > <small>图像增强和针对手写图像真实化工具: https://github.com/holny/Data_GneratorAugmentation </small>
+
 ### Show ##
 
-![gif1](descimage/dashboard.gif)
+<img src="descimage/dashboard.gif" height="70%" width="70%">
 
-![gif2](descimage/1.gif)
+<img src="descimage/1.gif" width="70%" height="70%">
 
-![gif3](descimage/2.gif)
+<img src="descimage/2.gif" width="70%" height="70%">
 
-![gif4](descimage/3.gif)
+<img src="descimage/3.gif" width="70%" height="70%">
 
-![gif5](descimage/4.gif)
+<img src="descimage/4.gif" width="70%" height="70%">
 
 ### Useage ###
 
@@ -33,9 +33,13 @@ For online training DL or ML project(not only tensorflow pytroch project)  Onlin
 
 ​	请先准备好redis和Mysql，redis配置在main.py。Mysql配置在main.py和你任务代码文件。如何配置如下。
 
-![use1](descimage/use2.png)
+<img src="descimage/use2.png" width="70%" height="70%">
 
-![use2](descimage/use3.png)	![use3](descimage/use4.png)
+<img src="descimage/use3.png" width="70%" height="70%">
+
+<img src="descimage/use4.png" width="70%" height="70%">
+
+
 
 3. Specify you task: 1.copy your task xxx.py file into the root of OnlineTrainingAndValidate project dir. (at the moment, Online project don't support upload task file online for specify task, but you can develop this function base on my code) 2. Config your task running api method in main.py simple_train().  3. add some mysql tool code into your task file code, for record training  info into mysql. And don't forget add a 'self' param into your task running api method params list (celery need for update your task thread status, and we can get it on main thread).
 
@@ -45,7 +49,7 @@ For online training DL or ML project(not only tensorflow pytroch project)  Onlin
 
    ​	你也可以参照已有的2个样例: task.py或者main_task.py
 
-   ![use5](descimage/use1.png)
+   <img src="descimage/use1.png" width="70%" height="70%">
 
 4. Final,  run the flask(main.py) with celery(  $ celery worker -A main.celery --loglevel=info  , run celery broker  in terminal  base the root path of project).  Start your multiply tasks online, and your can check these tasks status online or  terminal.
 
